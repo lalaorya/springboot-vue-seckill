@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhj.seckill.mapper.SecGoodMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        secgood(good_id,`name`,stock,price,sec_price,start_time,end_time)
+        values(#{goodId},#{name},#{stock},#{price},#{secPrice},#{startTime},#{endTime})
+    </insert>
+
+    <select id="selectList" resultType="com.hhj.seckill.entry.SecGood">
+        select * from secgood
+    </select>
+
+
+    <select id="selectById" resultType="com.hhj.seckill.vo.SecGoodVo">
+        select 
+
+    </select>
+</mapper>
