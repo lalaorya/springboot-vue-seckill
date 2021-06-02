@@ -1,5 +1,6 @@
 package com.hhj.seckill.service.Impl;
 
+import cn.hutool.crypto.digest.MD5;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -45,6 +46,19 @@ public class SecGoodServiceImpl implements SecGoodService {
 
     @Override
     public SecGoodVo selectById(int id) {
-        return null;
+        SecGoodVo secGoodVo = mapper.selectById(id);
+        return secGoodVo;
+    }
+
+    @Override
+    public SecGood selectById2(int id) {
+        SecGood secGood = mapper.selectById2(id);
+        return secGood;
+    }
+
+    @Override
+    public int reduceStock(int id) {
+        int i = mapper.reduceStock(id);
+        return i;
     }
 }

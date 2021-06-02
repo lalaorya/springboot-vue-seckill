@@ -2,6 +2,7 @@ package com.hhj.seckill.vo;
 
 import cn.hutool.core.date.DateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hhj.seckill.entry.Good;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,8 @@ import java.util.List;
  * 返回商品详情的vo
  */
 public class SecGoodVo {
-    private String introduce;
-    private String img;
 
+    private int id;
     private int goodId;
     private String name;
     private double price;
@@ -37,5 +37,7 @@ public class SecGoodVo {
     private Date startTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
+
+    private Good good;
 //    private List<String> time;
 }

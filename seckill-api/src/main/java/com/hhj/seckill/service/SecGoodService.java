@@ -32,4 +32,12 @@ public interface SecGoodService {
      * 连表查询
      */
     public SecGoodVo selectById(int id);
+
+    public SecGood selectById2(int id);
+
+    /**
+     * 通过秒杀流水号减库存
+     * @param id
+     */
+    int reduceStock(int id);
 }

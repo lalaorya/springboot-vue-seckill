@@ -6,14 +6,37 @@
         secgood(good_id,`name`,stock,price,sec_price,start_time,end_time)
         values(#{goodId},#{name},#{stock},#{price},#{secPrice},#{startTime},#{endTime})
     </insert>
+    <update id="reduceStock">
+        update secgood set stock=stock-1 where stock > 0 and id = #{id}
+    </update>
 
     <select id="selectList" resultType="com.hhj.seckill.entry.SecGood">
         select * from secgood
     </select>
 
+    
+    <resultMap id="selectById2" type="com.hhj.seckill.vo.SecGoodVo">
+        <result column="good_id" property="goodId"></result>
+        <result column="name" property="name"></result>
+        <result column="stock" property="stock"></result>
+        <result column="price" property="price"></result>
+        <result column="sec_price" property="secPrice"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="img" property="good.img"></result>
+        <result column="introduce" property="good.introduce"></result>
+    </resultMap>
+    
+    <select id="selectById" resultMap="selectById2">
+        select sg.id,sg.good_id,sg.name,sg.stock,sg.price,sg.sec_price,
+                sg.start_time,sg.end_time,g.img,g.introduce
+        from secgood sg,good g
+        where sg.good_id=g.id and
+                sg.id=#{id}
 
-    <select id="selectById" resultType="com.hhj.seckill.vo.SecGoodVo">
-        select 
+    </select>
 
+    <select id="selectById2" resultType="com.hhj.seckill.entry.SecGood">
+        select * from secgood where id=#{id}
     </select>
 </mapper>

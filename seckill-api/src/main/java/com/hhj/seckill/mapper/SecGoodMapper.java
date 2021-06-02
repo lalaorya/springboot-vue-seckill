@@ -4,6 +4,7 @@ import com.hhj.seckill.entry.SecGood;
 import com.hhj.seckill.vo.SecGoodVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -26,5 +27,14 @@ public interface SecGoodMapper {
     /**
      * 通过id查询秒杀商品 联表查询
      */
-    SecGoodVo selectById(int id);
+    SecGoodVo selectById(@Param("id") int id);
+
+    SecGood selectById2(@Param("id") int id);
+
+    /**
+     * 通过秒杀流水号减库存
+     * @param id
+     * @return
+     */
+    int reduceStock(int id);
 }

@@ -52,7 +52,9 @@ public class SecGoodController {
     @GetMapping("{id}")
     @ApiOperation("通过id查询秒杀商品")
     public Result selectById(@PathVariable("id")int id){
-        secGoodService.
-        return null;
+//        secGoodService.
+        SecGoodVo secGoodVo = secGoodService.selectById(id);
+        System.out.println(secGoodVo.toString());
+        return Result.success(secGoodVo);
     }
 }
