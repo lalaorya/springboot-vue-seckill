@@ -5,6 +5,7 @@
     <el-table
       border
       size="medium"
+      max-height=620px
       :data="
         tableData.filter(
           (data) =>
@@ -19,12 +20,7 @@
       </el-table-column>
       <el-table-column label="商品名称" prop="name" align="center">
       </el-table-column>
-      <el-table-column
-        label="库存数量"
-        prop="stock"
-        align="center"
-        width="120"
-      >
+      <el-table-column label="库存数量" prop="stock" align="center" width="120">
       </el-table-column>
       <el-table-column label="原价" prop="price" align="center" width="120">
       </el-table-column>
@@ -65,6 +61,18 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalNum"
+      style="float: right; padding: 20px 90px 20px 0px"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -77,6 +85,10 @@ export default {
 
   data() {
     return {
+      pagesize: 100,
+      totalNum: 100,
+      screenHeight: "100px",
+      currentPage: 1,
       tableData: [
         {
           id: 1,
@@ -107,18 +119,17 @@ export default {
     };
   },
 
-  created(){
-    this.selectList();
+  created() {
+    this.selectList(this.currentPage,this.pagesize);
   },
 
   methods: {
-
-    selectList(){
-       const _this = this;
-       this.$axios.get("/secgood/list?curpage=1&size=100").then((res) => {
+    selectList(val,pagesize) {
+      const _this = this;
+      this.$axios.get("/secgood/list?curpage="+val+"&size="+pagesize).then((res) => {
         if (res.data.code == 200) {
-          _this.tableData=res.data.data.list;
-          
+          _this.tableData = res.data.data.list;
+          _this.totalNum = res.data.data.total
           // this.reload();
         } else {
           this.$message.error(res.data.msg);
@@ -126,14 +137,23 @@ export default {
       });
     },
 
-
     handleEdit(index, row) {
       console.log(index, row);
     },
     handletoDetail(index, row) {
       this.$router.push({
-        path: "/good/"+row.id,
+        path: "/good/" + row.id,
       });
+    },
+
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.pagesize = val;
+      this.handleCurrentChange(1);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.selectList(val, this.pagesize);
     },
   },
 };

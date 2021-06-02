@@ -6,6 +6,7 @@
     <el-table
       border
       size="medium"
+      max-height=620px
       :data="
         tableData.filter(
           (data) =>
@@ -57,6 +58,17 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalNum"
+      style="float:right;padding:20px 90px 20px 0px ">
+    </el-pagination>
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editable" width="34%">
@@ -112,6 +124,10 @@ export default {
 
   data() {
     return {
+      pagesize:100,
+      totalNum:100,
+      screenHeight:'100px',
+      currentPage: 1,
       time: [],
       pickerOptions: {},
       editable: false,
@@ -157,14 +173,17 @@ export default {
     };
   },
   created() {
-    this.selectList();
+    this.screenHeight=window.innerHeight*0.82+"px"
+    console.log(this.screenHeight);
+    this.selectList(this.currentPage,this.pagesize);
   },
   methods: {
-    selectList(){
+    selectList(val,pagesize){
        const _this = this;
-       this.$axios.get("/good/list?curpage=1&size=100").then((res) => {
+       this.$axios.get("/good/list?curpage="+val+"&size="+pagesize).then((res) => {
         if (res.data.code == 200) {
           _this.tableData=res.data.data.list;
+          _this.totalNum=res.data.data.total;
           
           // this.reload();
         } else {
@@ -204,6 +223,16 @@ export default {
       //   this.$message.error("不要再试了哦，没有权限");
       // });
     },
+
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.pagesize=val;
+        this.handleCurrentChange(1)
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.selectList(val,this.pagesize)
+      }
   },
 };
 </script>

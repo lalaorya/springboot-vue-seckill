@@ -9,7 +9,7 @@
         <div class="text item seckill">秒杀价 ：{{ goodDetail.secPrice }}</div>
         <el-divider></el-divider>
         <div id="secbutton">
-          <el-button type="danger" v-if="status == 0" size="medium" icon="el-icon-time">
+          <el-button type="danger" v-if="status == 0" size="medium" icon="el-icon-time" disabled>
             <span style="font-size: 25px">
               秒杀倒计时： {{ hour }}:{{ minutes }}:{{ seconds }}</span
             >
@@ -17,11 +17,11 @@
           <el-button
             type="success"
             v-if="status == 1"
-            @click="seckill(goodDetail.id)"
+            @click="seckill()"
           >
             <span style="font-size: 25px">立即秒杀 </span>
           </el-button>
-          <el-button type="success" v-if="status == 2">
+          <el-button type="success" v-if="status == 2" disabled>
             <span style="font-size: 25px">秒杀活动已结束</span>
           </el-button>
         </div>
