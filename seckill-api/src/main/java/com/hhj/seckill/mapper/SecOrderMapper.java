@@ -1,9 +1,12 @@
 package com.hhj.seckill.mapper;
 
+import com.hhj.seckill.entry.Good;
+import com.hhj.seckill.entry.SecOrder;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author virtual
@@ -16,5 +19,7 @@ public interface SecOrderMapper {
     public boolean generateOrder(@Param("goodId") int goodId,
                              @Param("userId") int userId,
                              @Param("createTime") Date createTime);
+
+    public List<SecOrder> selectList();
 
 }
