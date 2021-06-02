@@ -13,19 +13,19 @@ export default new Router({
             component: () => import('../views/GoodList.vue'),
         },
         {
-          path: '/seclist',
-          component: () => import(/* webpackChunkName: "login" */ '../views/SecList.vue'),
-          // meta: { title: '登录' }
+            path: '/seclist',
+            component: () => import(/* webpackChunkName: "login" */ '../views/SecList.vue'),
+            // meta: { title: '登录' }
         },
         {
-          path: '/good/:id',
-          component: () => import(/* webpackChunkName: "login" */ '../views/GoodDetail.vue'),
-          // meta: { title: '登录' }
+            path: '/good/:id',
+            component: () => import(/* webpackChunkName: "login" */ '../views/GoodDetail.vue'),
+            // meta: { title: '登录' }
         },
         {
-          path: '/secorder',
-          component: () => import(/* webpackChunkName: "login" */ '../views/SecOrder.vue'),
-          // meta: { title: '登录' }
+            path: '/secorder',
+            component: () => import(/* webpackChunkName: "login" */ '../views/SecOrder.vue'),
+            // meta: { title: '登录' }
         },
         {
             path: '/login',

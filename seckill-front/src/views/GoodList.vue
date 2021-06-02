@@ -9,7 +9,7 @@
       :data="
         tableData.filter(
           (data) =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
+            !search || data.name.includes(search)
         )
       "
       style="width: 80%; margin-left: auto; margin-right: auto"
@@ -21,7 +21,7 @@
       <el-table-column
         width="120"
         label="库存数量"
-        prop="number"
+        prop="stock"
         align="center"
       >
       </el-table-column>
@@ -45,7 +45,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button
           >
           <!-- <el-button
@@ -63,26 +63,27 @@
       <el-form
         :label-position="labelPosition"
         label-width="80px"
-        :model="formLabelAlign"
+        :model="secgood"
       >
         <el-form-item label="商品ID">
-          <el-input v-model="formLabelAlign.name"></el-input>
+          <el-input v-model="secgood.goodId"></el-input>
         </el-form-item>
         <el-form-item label="商品名称">
-          <el-input v-model="formLabelAlign.region"></el-input>
+          <el-input v-model="secgood.name"></el-input>
         </el-form-item>
         <el-form-item label="原价">
-          <el-input v-model="formLabelAlign.type"></el-input>
+          <el-input v-model="secgood.price"></el-input>
         </el-form-item>
         <el-form-item label="秒杀价">
-          <el-input v-model="formLabelAlign.type"></el-input>
+          <el-input v-model="secgood.secPrice"></el-input>
         </el-form-item>
         <el-form-item label="秒杀数目">
-          <el-input v-model="formLabelAlign.type"></el-input>
+          <el-input v-model="secgood.stock"></el-input>
         </el-form-item>
         <el-form-item label="秒杀时间">
           <el-date-picker
-            v-model="value2"
+            v-model="time"
+            value-format="yyyy-MM-dd HH:mm:ss"
             type="datetimerange"
             :picker-options="pickerOptions"
             range-separator="至"
@@ -111,7 +112,10 @@ export default {
 
   data() {
     return {
-      editable: true,
+      time: [],
+      pickerOptions: {},
+      editable: false,
+      secgood: {},
       tagform: {
         id: null,
         name: "",
@@ -124,44 +128,82 @@ export default {
       },
 
       tableData: [
-        {
-          id: 1,
-          name: "外星人笔记本电脑",
-          number: 100,
-          img: undefined,
-          introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
-          price: 15999,
-        },
-        {
-          id: 1,
-          name: "外星人笔记本电脑",
-          number: 100,
-          img: undefined,
-          introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
-          price: 15999,
-        },
-        {
-          id: 1,
-          name: "外星人笔记本电脑",
-          number: 100,
-          img: undefined,
-          introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
-          price: 15999,
-        },
+        // {
+        //   id: 1,
+        //   name: "外星人笔记本电脑",
+        //   number: 100,
+        //   img: undefined,
+        //   introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
+        //   price: 15999,
+        // },
+        // {
+        //   id: 1,
+        //   name: "外星人笔记本电脑",
+        //   number: 100,
+        //   img: undefined,
+        //   introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
+        //   price: 15999,
+        // },
+        // {
+        //   id: 1,
+        //   name: "外星人笔记本电脑",
+        //   number: 100,
+        //   img: undefined,
+        //   introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
+        //   price: 15999,
+        // },
       ],
       search: "",
     };
   },
+  created() {
+    this.selectList();
+  },
   methods: {
+    selectList(){
+       const _this = this;
+       this.$axios.get("/good/list?curpage=1&size=100").then((res) => {
+        if (res.data.code == 200) {
+          _this.tableData=res.data.data.list;
+          
+          // this.reload();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+    },
+
     handleEdit(index, row) {
       console.log(index, row);
     },
     handleDelete(index, row) {
       console.log(index, row);
     },
-    // addToSeckill(index,row){
+    addToSeckill() {
+      this.editable = true;
+    },
 
-    // }
+    saveEdit() {
+      const _this = this;
+      _this.secgood.startTime = _this.time[0];
+      _this.secgood.endTime = _this.time[1];
+
+      console.log(this.secgood);
+      this.$axios.post("/secgood/add", _this.secgood).then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success("添加成功");
+          _this.editable = false;
+          _this.secgood={};
+          _this.time=[];
+          // this.reload();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
+      // .catch((err) => {
+      //   this.$message.error("不要再试了哦，没有权限");
+      // });
+    },
   },
 };
 </script>

@@ -14,7 +14,7 @@
       "
       style="width: 50%; margin-left: auto; margin-right: auto"
     >
-      <el-table-column label="订单ID" prop="id" align="center">
+      <el-table-column label="订单流水号" prop="id" align="center">
       </el-table-column>
       <el-table-column label="秒杀商品ID" prop="good_id" align="center">
       </el-table-column>
@@ -26,6 +26,8 @@
         </el-tag>
       </el-table-column>
       <el-table-column label="订单创建时间" prop="create_time" align="center">
+      </el-table-column>
+            <el-table-column label="付款时间" prop="pay_time" align="center">
       </el-table-column>
     </el-table>
   </div>
