@@ -1,9 +1,6 @@
-# springboot-vue-seckill
-前后端分离的秒杀项目
+# 工程简介
 
 
 
-`
-
-
+# 延伸阅读
 
