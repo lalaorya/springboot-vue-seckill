@@ -5,4 +5,7 @@
         insert into secorder(good_id,user_id,create_time)
         values(#{goodId},#{userId},#{createTime})
     </insert>
+    <select id="selectList" resultType="com.hhj.seckill.entry.SecOrder">
+        select * from secorder
+    </select>
 </mapper>
