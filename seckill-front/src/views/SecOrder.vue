@@ -17,24 +17,48 @@
     >
       <el-table-column label="订单流水号" prop="id" align="center">
       </el-table-column>
-      <el-table-column label="秒杀商品ID" prop="goodId" align="center">
+      <el-table-column label="秒杀商品ID" prop="secId" align="center">
       </el-table-column>
       <el-table-column width="120" label="用户ID" prop="userId" align="center">
       </el-table-column>
       <el-table-column label="订单状态" prop="status" align="center">
-        <el-tag :item="items" :key="items.label" :type="items.type" effect="dark">
+        <el-tag
+          :item="status"
+          :key="items.label"
+          :type="items.type"
+          effect="dark"
+        >
           {{ items.label }}
         </el-tag>
       </el-table-column>
-      <el-table-column width="180" label="订单创建时间" prop="createTime" align="center">
+      <el-table-column
+        width="180"
+        label="订单创建时间"
+        prop="createTime"
+        align="center"
+      >
       </el-table-column>
-            <el-table-column label="付款时间" prop="payTime" align="center">
+      <el-table-column label="付款时间" prop="payTime" align="center">
+      </el-table-column>
+
+      <el-table-column align="center">
+        <template slot="header" slot-scope>
+          <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+        </template>
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            @click="toPay(scope.$index, scope.row)"
+            >去付款</el-button
+          >
+        </template>
       </el-table-column>
     </el-table>
 
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
+      background="true"
       :current-page="currentPage"
       :page-sizes="[100, 200, 300, 400]"
       :page-size="pagesize"
@@ -60,7 +84,7 @@ export default {
       screenHeight: "100px",
       currentPage: 1,
 
-      items: { type: "success", label: "标签一" },
+      items: { type: "success", label: "2321" },
       tableData: [
         {
           id: 1,
@@ -69,6 +93,7 @@ export default {
           img: undefined,
           introduce: "外星人笔记本巴拉巴拉巴拉巴拉巴拉巴拉巴拉",
           price: 15999,
+         
         },
         {
           id: 1,
@@ -109,8 +134,20 @@ export default {
         });
     },
 
-    handleEdit(index, row) {
-      console.log(index, row);
+    toPay(index, row) {
+      const _this = this;
+      console.log(row);
+      this.$axios
+        .put("/secorder/payById?id=" + row.id)
+        .then((res) => {
+          if (res.data.code == 200) {
+            // this.reload();
+            _this.$message.success(res.data.msg);
+            row.payTime=res.data.data;
+          } else {
+            _this.$message.error(res.data.msg);
+          }
+        });
     },
     handleDelete(index, row) {
       console.log(index, row);
