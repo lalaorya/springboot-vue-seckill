@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hhj.seckill.mapper.UserMapper">
+    <insert id="addUser">
+        insert into user(password,nick,salt) values(#{password},#{nick},#{salt})
+    </insert>
     <select id="selectByNick" resultType="com.hhj.seckill.entry.User">
-        select * from user where nick=#{nick}
+        select id,password,nick,salt,register_date,last_login_date,login_count from user where nick=#{nick}
 
     </select>
 </mapper>

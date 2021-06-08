@@ -1,21 +1,26 @@
 package com.hhj.seckill.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.hhj.seckill.common.Result;
 import com.hhj.seckill.common.enums.ErrorEnum;
 import com.hhj.seckill.common.enums.SeckillEnum;
 import com.hhj.seckill.common.excetion.MyException;
+import com.hhj.seckill.common.util.RedisUtil;
 import com.hhj.seckill.entry.SecGood;
 import com.hhj.seckill.service.SecGoodService;
 import com.hhj.seckill.service.SecKillService;
 import com.hhj.seckill.vo.Exposer;
 import com.hhj.seckill.vo.SecGoodVo;
+import com.hhj.seckill.vo.SecKillOrder;
 import com.hhj.seckill.vo.SecKillVo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author virtual
@@ -25,13 +30,18 @@ import java.util.Date;
 @RestController
 @Slf4j
 @Api("秒杀操作")
-public class SeckillController {
+public class SeckillController implements InitializingBean {
+
+    private final String SEC_KILL_STOCK="seckill:stock:";
 
     @Autowired
     SecGoodService secGoodService;
 
     @Autowired
     SecKillService secKillService;
+
+    @Autowired
+    RedisUtil util;
 
 
     @GetMapping("/exposer/{secId}")
@@ -47,28 +57,37 @@ public class SeckillController {
 
     @PostMapping("/seckill")
     public Result doSecKill(@RequestBody SecKillVo vo){
-        // 校验md5
+
         boolean b1 = secKillService.verifyMd5(vo.getMd5(), vo.getSecId());
         if (b1==false){
+            // 秒杀接口地址错误
             throw new MyException(ErrorEnum.DATE_REWRITE.getMsg());
         }
-        // 判断秒杀时间
-        SecGood secGood = secGoodService.selectById2(vo.getSecId());
-//        if(System.currentTimeMillis() >secGood.getEndTime().getTime()){
-//            // 秒杀结束
-//            return Result.success(SeckillEnum.END.getMsg());
-//        }
-//        if(secGood.getStartTime().getTime() > System.currentTimeMillis()){
-//            // 秒杀活动尚未开始
-//            return Result.success(SeckillEnum.END.getMsg());
-//        }
+
+//        SecGood secGood = secGoodService.selectById2(vo.getSecId());
         // 减库存 生成订单
         // 失败 事务回滚
         // 事务操作
         // TODO 重复秒杀判断
-        boolean b = secKillService.doSecKill(vo.getSecId(), secGood.getGoodId(), vo.getUserId());
-        return Result.success(null,SeckillEnum.SUCCESS.getMsg());
+//        if(secGood.getStock()==0){
+//            throw new MyException(ErrorEnum.STOCK_ZERT);
+//        }
+
+        SecKillOrder secKillOrder = new SecKillOrder(vo.getSecId(), vo.getUserId(), new Date());
+        SeckillEnum seckillEnum = secKillService.doSecKill(secKillOrder);
+        return Result.success(null,seckillEnum.getMsg());
     }
 
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // 库存预热
+        // 读取所有秒杀商品及其库存 进行redis缓存
+        List<SecGood> secGoods = secGoodService.selectList();
+        for(SecGood secGood:secGoods){
+            util.set(SEC_KILL_STOCK+secGood.getId(),
+                            secGood.getStock(),
+                    secGood.getEndTime().getTime()-System.currentTimeMillis());
+        }
+    }
 }

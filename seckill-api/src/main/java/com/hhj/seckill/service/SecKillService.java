@@ -3,6 +3,7 @@ package com.hhj.seckill.service;
 import com.hhj.seckill.common.Result;
 import com.hhj.seckill.common.enums.SeckillEnum;
 import com.hhj.seckill.vo.Exposer;
+import com.hhj.seckill.vo.SecKillOrder;
 
 /**
  * @Author virtual
@@ -18,7 +19,7 @@ public interface SecKillService {
      * @param userId 用户id
      * @return
      */
-    public boolean doSecKill(int secId, int goodId, int userId);
+    public SeckillEnum doSecKill(SecKillOrder secKillOrder);
 
     /**前端秒杀要发送两个请求，第一个获得秒杀信息（是否开启，秒杀真正地址）
      * 第二个才执行秒杀
@@ -34,4 +35,6 @@ public interface SecKillService {
      * @return
      */
     public boolean verifyMd5(String md5,int secId);
+
+    public SeckillEnum seckill(SecKillOrder secKillOrder);
 }

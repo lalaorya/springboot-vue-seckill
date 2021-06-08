@@ -2,6 +2,7 @@ package com.hhj.seckill.mapper;
 
 import com.hhj.seckill.entry.Good;
 import com.hhj.seckill.entry.SecOrder;
+import com.hhj.seckill.vo.SecKillOrder;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,10 +17,10 @@ import java.util.List;
 @Mapper
 public interface SecOrderMapper {
 
-    public boolean generateOrder(@Param("goodId") int goodId,
-                             @Param("userId") int userId,
-                             @Param("createTime") Date createTime);
+    public boolean generateOrder(SecKillOrder secKillOrder);
 
     public List<SecOrder> selectList();
+
+    public boolean payById(@Param("id") int id,@Param("payTime") Date payTime);
 
 }

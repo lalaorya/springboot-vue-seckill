@@ -50,6 +50,11 @@ public class SecGoodServiceImpl implements SecGoodService {
         return secGoodVo;
     }
 
+    /**
+     * 高并发接口 redis缓存
+     * @param id
+     * @return
+     */
     @Override
     public SecGood selectById2(int id) {
         SecGood secGood = mapper.selectById2(id);

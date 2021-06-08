@@ -19,7 +19,8 @@ public enum  SeckillEnum {
     REPEAT(20003,"禁止重复秒杀"),
     INNER_ERROR(20004,"系统异常"),
     DATE_REWRITE(20005,"数据被篡改"),
-    STOCK_ZERT(20006,"已被抢光");
+    STOCK_ZERT(20007,"已被抢光"),
+    WAIT_QUEUE(20008,"排队中");
 
     private int code;
     private String msg;

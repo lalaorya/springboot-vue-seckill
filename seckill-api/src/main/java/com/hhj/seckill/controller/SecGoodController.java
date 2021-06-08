@@ -2,6 +2,7 @@ package com.hhj.seckill.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.hhj.seckill.common.Result;
+import com.hhj.seckill.common.enums.SeckillEnum;
 import com.hhj.seckill.entry.SecGood;
 import com.hhj.seckill.service.SecGoodService;
 import com.hhj.seckill.vo.SecGoodVo;
@@ -54,6 +55,9 @@ public class SecGoodController {
     public Result selectById(@PathVariable("id")int id){
 //        secGoodService.
         SecGoodVo secGoodVo = secGoodService.selectById(id);
+        if(secGoodVo==null){
+            return Result.exception(SeckillEnum.DATE_REWRITE.getMsg());
+        }
         System.out.println(secGoodVo.toString());
         return Result.success(secGoodVo);
     }

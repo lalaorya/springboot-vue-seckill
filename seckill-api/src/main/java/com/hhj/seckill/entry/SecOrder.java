@@ -18,7 +18,7 @@ import java.util.Date;
 @Data
 public class SecOrder {
     private int id;
-    private int goodId;
+    private int secId;
     private int userId;
     private int status;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

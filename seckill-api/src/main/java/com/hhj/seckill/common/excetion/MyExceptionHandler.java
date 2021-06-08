@@ -1,6 +1,7 @@
 package com.hhj.seckill.common.excetion;
 
 import com.hhj.seckill.common.Result;
+import com.hhj.seckill.common.enums.ErrorEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -46,8 +47,8 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
-        log.error(e.getMessage(), e);
-        return Result.exception(e.getMessage());
+        log.error(e.getLocalizedMessage());
+        return Result.exception(ErrorEnum.INNER_ERROR.getMsg());
     }
 
 }

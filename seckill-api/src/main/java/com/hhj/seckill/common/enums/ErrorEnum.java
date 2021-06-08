@@ -26,7 +26,7 @@ public enum ErrorEnum {
     EAARY(20006,"秒杀活动尚未开始"),
     END(20002,"秒杀活动已结束"),
     REPEAT(20003,"禁止重复秒杀"),
-    INNER_ERROR(20004,"系统异常"),
+    INNER_ERROR(20004,"系统异常,请联系管理员"),
     DATE_REWRITE(20005,"数据被篡改"),
     STOCK_ZERT(20006,"已被抢光");
 

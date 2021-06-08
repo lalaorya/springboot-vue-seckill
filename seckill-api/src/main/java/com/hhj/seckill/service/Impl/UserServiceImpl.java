@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService {
         User user = mapper.selectByNick(nick);
         return user;
     }
+
+    @Override
+    public boolean addUser(User user) {
+        return mapper.addUser(user);
+    }
 }

@@ -17,12 +17,12 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class User {
-    private int id;
+    private Integer id;
     private String password;
     private String nick;
     private String salt;
     private Date registerDate;
     private Date lastLoginDate;
-    private int loginCount;
+    private Integer loginCount;
 
 }

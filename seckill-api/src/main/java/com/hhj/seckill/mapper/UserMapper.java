@@ -12,4 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
     public User selectByNick(String nick);
+
+    public boolean addUser(User user);
 }

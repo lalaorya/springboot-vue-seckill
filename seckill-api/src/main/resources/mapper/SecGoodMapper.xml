@@ -7,11 +7,11 @@
         values(#{goodId},#{name},#{stock},#{price},#{secPrice},#{startTime},#{endTime})
     </insert>
     <update id="reduceStock">
-        update secgood set stock=stock-1 where stock > 0 and id = #{id}
+        update secgood set stock=stock-1 where id = #{id} and stock > 0
     </update>
 
     <select id="selectList" resultType="com.hhj.seckill.entry.SecGood">
-        select * from secgood
+        select id,good_id,`name`,stock,price,sec_price,start_time,end_time from secgood
     </select>
 
     
@@ -37,6 +37,6 @@
     </select>
 
     <select id="selectById2" resultType="com.hhj.seckill.entry.SecGood">
-        select * from secgood where id=#{id}
+        select id,good_id,`name`,stock,price,sec_price,start_time,end_time from secgood where id=#{id}
     </select>
 </mapper>

@@ -2,10 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hhj.seckill.mapper.SecOrderMapper">
     <insert id="generateOrder" >
-        insert into secorder(good_id,user_id,create_time)
-        values(#{goodId},#{userId},#{createTime})
+        insert into secorder(sec_id,user_id,create_time)
+        values(#{secId},#{userId},#{createTime})
     </insert>
+    <update id="payById">
+        update secorder set status=1,pay_time=#{payTime} where id=#{id}
+    </update>
     <select id="selectList" resultType="com.hhj.seckill.entry.SecOrder">
-        select * from secorder
+        select id,sec_id,user_id,status,create_time,pay_time from secorder
     </select>
 </mapper>
