@@ -9,16 +9,18 @@
         <div class="text item seckill">秒杀价 ：{{ goodDetail.secPrice }}</div>
         <el-divider></el-divider>
         <div id="secbutton">
-          <el-button type="danger" v-if="status == 0" size="medium" icon="el-icon-time" disabled>
+          <el-button
+            type="danger"
+            v-if="status == 0"
+            size="medium"
+            icon="el-icon-time"
+            disabled
+          >
             <span style="font-size: 25px">
               秒杀倒计时： {{ hour }}:{{ minutes }}:{{ seconds }}</span
             >
           </el-button>
-          <el-button
-            type="success"
-            v-if="status == 1"
-            @click="seckill()"
-          >
+          <el-button type="success" v-if="status == 1" @click="seckill()">
             <span style="font-size: 25px">立即秒杀 </span>
           </el-button>
           <el-button type="success" v-if="status == 2" disabled>
@@ -32,6 +34,7 @@
 
 <script>
 import vHeader from "../components/Header.vue";
+// import { MessageBox } from "element-ui";
 export default {
   components: {
     vHeader,
@@ -52,10 +55,11 @@ export default {
   },
 
   created() {
-    if(this.$store.getters.getUser.id){
-      this.seckillForm.userId=this.$store.getters.getUser.id;
-    }
     this.getGoodDetail();
+    if (this.$store.getters.getUser.id) {
+      this.seckillForm.userId = this.$store.getters.getUser.id;
+    }
+
     // this.caculTotalTime();
     // this.countDown();
   },
@@ -141,7 +145,7 @@ export default {
     seckill() {
       console.log(this.goodDetail);
       const _this = this;
-      const secId=_this.goodDetail.id;
+      const secId = _this.goodDetail.id;
       this.$axios.get(`/exposer/${secId}`).then((res) => {
         if (res.data.code == 400) {
           // 调整时间
@@ -149,11 +153,35 @@ export default {
           _this.lastTime = res.data.end - res.data.now;
         } else {
           const md5 = res.data.data.md5;
-          _this.seckillForm.secId=secId;
-          _this.seckillForm.md5=md5;
+          _this.seckillForm.secId = secId;
+          _this.seckillForm.md5 = md5;
           this.$axios.post("/seckill", _this.seckillForm).then((res) => {
             if (res.data.code == 200) {
-              this.$message.success(res.data.msg);
+              const loading = this.$loading({
+                lock: true,
+                text: "排队中",
+                spinner: "el-icon-loading",
+                background: "rgba(0, 0, 0, 0.6)",
+              });
+              setTimeout(() => {
+                loading.close();
+                this.$confirm("秒杀成功", "提示", {
+                  confirmButtonText: "查看订单",
+                  cancelButtonText: "取消",
+                  type: "success",
+                })
+                  .then(() => {
+                    this.$router.push({
+                      path: "/secorder/",
+                    });
+                  })
+                  .catch(() => {
+                    this.$message({
+                      type: "info",
+                      message: "已取消",
+                    });
+                  });
+              }, 2000);
             } else {
               this.$message.error(res.data.msg);
             }

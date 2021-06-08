@@ -60,6 +60,7 @@
     </el-table>
 
     <el-pagination
+    background=true
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
