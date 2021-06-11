@@ -61,4 +61,11 @@ public class SecGoodController {
         System.out.println(secGoodVo.toString());
         return Result.success(secGoodVo);
     }
+
+    @GetMapping("prepare")
+    @ApiOperation("通过id查询秒杀商品")
+    public Result prepare(int id){
+        secGoodService.prepare(id);
+        return Result.success(null,"操作成功");
+    }
 }

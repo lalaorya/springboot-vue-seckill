@@ -62,16 +62,18 @@ public class SecKillServiceImpl implements SecKillService {
         long stock = redisUtil.luaStock(SEC_KILL_STOCK + secKillOrder.getSecId());
         log.info("当前库存为{}",stock);
 
-        if(stock <= 0)    throw new MyException(ErrorEnum.STOCK_ZERT);
+        if(stock < 0)    throw new MyException(ErrorEnum.STOCK_ZERT);
 
         // 重复消费判断
         // 默认过期时间为两天
         // 这里过期时间应该要修改 但是又怕会影响性能 TODO
-//        StringBuffer append = new StringBuffer().append(SEC_kill_USER + secKillOrder.getSecId()).append(":").append(secKillOrder.getUserId());
-//        if(! redisUtil.setnx(append.toString(), 1, 2)){
-//            // 重复购买了
-//            throw new MyException(ErrorEnum.REPEAT);
-//        };
+        StringBuffer append = new StringBuffer().append(SEC_kill_USER + secKillOrder.getSecId()).append(":").append(secKillOrder.getUserId());
+        // TODO 每次都要从redis中拿实在是浪费时间，应该搞个库存预热从本地拿
+//        Long exire = redisUtil.getExire(SEC_KILL_STOCK + secKillOrder.getSecId());
+        if(! redisUtil.setnx(append.toString(), 1, 2 )){
+            // 重复购买了
+            throw new MyException(ErrorEnum.REPEAT);
+        };
 
         // v2.0 订单放入消息队列
         sender.sendOrder(secKillOrder);
@@ -126,7 +128,7 @@ public class SecKillServiceImpl implements SecKillService {
                 String md5 = util.md5(id + "", SEC_SALT);
                 Exposer exposer = new Exposer(true, md5, secGood.getId(), 0, 0, 0);
                 redisUtil.set(SEC_KILL_EXPOSER+id,
-                                exposer,-1
+                                exposer,(end-now)/1000
                         );
                 return exposer;
             }

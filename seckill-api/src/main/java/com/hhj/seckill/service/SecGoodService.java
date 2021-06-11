@@ -40,4 +40,9 @@ public interface SecGoodService {
      * @param id
      */
     int reduceStock(int id);
+
+    /**
+     * 秒杀商品库存预热
+     */
+    boolean prepare(int id);
 }

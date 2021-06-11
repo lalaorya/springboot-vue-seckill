@@ -1,5 +1,6 @@
 package com.hhj.seckill.mq;
 
+import cn.hutool.core.io.FileUtil;
 import com.hhj.seckill.common.util.RedisUtil;
 import com.hhj.seckill.config.RabbitMqConfig;
 import com.hhj.seckill.vo.SecKillOrder;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 
 /**
  * @Author virtual
@@ -38,9 +40,10 @@ public class MqSender {
                     log.info("消息发送成功，订单请求进入MQ");
                 }else {
                     log.info("消息发送失败confirm，失败原因：{},库存回滚",s);
-                    System.out.println(correlationData.getId());
+//                    System.out.println(correlationData.getId());
                     String id = correlationData.getId();
                     util.incr("seckill:stock:"+id);
+
 
                 }
             }
@@ -62,7 +65,7 @@ public class MqSender {
 
     public void sendOrder(SecKillOrder secKillOrder){
 
-        template.convertAndSend(RabbitMqConfig.SEC_EXCHANGE + " 2", "", secKillOrder, new MessagePostProcessor() {
+        template.convertAndSend(RabbitMqConfig.SEC_EXCHANGE, "", secKillOrder, new MessagePostProcessor() {
                     @Override
                     public Message postProcessMessage(Message message) throws AmqpException {
                         return message;

@@ -37,23 +37,76 @@ spring:
         enabled: true
         url-pattern: /*
         exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
-      max-active: 2
-      initial-size: 1
+      #      最大连接数
+      max-active: 100
+      #      初始化连接池大小
+      initial-size: 10
       max-wait: 60000
-      min-idle: 1
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
+      #      最小连接数
+      min-idle: 10
+      #      间隔多久进行一次检测来关闭空闲的连接
+      time-between-eviction-runs-millis: 4000
+      #      配置一个连接在连接池中最小生存时间
+      min-evictable-idle-time-millis: 600000
+      max-evictable-idle-time-millis: 900000
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
       pool-prepared-statements: true
       max-open-prepared-statements: 20
+      validation-query: "select 1"
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123abc
+    jedis:
+      pool:
+        max-active: 200
+        max-idle: 50
+        min-idle: 5
+        max-wait: 1000
+        time-between-eviction-runs: 30000
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    virtual-host: /
+    username: virtual
+    password: virtual
+
+    #    开启生产者消息确认
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        concurrency: 10
+        prefetch: 10
+        auto-startup: true
+        default-requeue-rejected: true
+        acknowledge-mode: manual
+    template:
+#      retry:
+#        enabled: true
+#        initial-interval: 1s
+#        max-attempts: 3
+#        max-interval: 10s
+#        multiplier: 1.0
+      mandatory: true
 
 
-redis:
-  host: 127.0.0.1
-  port: 6379
-  password: 123abc
+
+
+
+#redis:
+#  host: 127.0.0.1
+#  port: 6379
+#  password: 123abc
+#  lettuce:
+#    max-active: 8
+#    max-idle: 8
+#    min-idle: 0
+#    max-wait: -1ms
 
 
 #  type-aliases-package: com.hhj.seckill

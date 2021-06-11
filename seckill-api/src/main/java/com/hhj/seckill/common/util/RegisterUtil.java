@@ -16,7 +16,7 @@ import java.util.Date;
  * @Version 1.0
  */
 
-@Component
+//@Component
 public class RegisterUtil {
 
     @Autowired
@@ -25,7 +25,7 @@ public class RegisterUtil {
     @Autowired
     UserService service;
 
-    public  void doRegister(){
+    public void doRegister(){
 //        new User(null,null,"admin1",);
 
         for (int i = 1; i <= 1000; i++) {

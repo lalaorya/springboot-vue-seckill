@@ -1,5 +1,6 @@
 package com.hhj.seckill.mq;
 
+import cn.hutool.core.io.FileUtil;
 import com.hhj.seckill.common.excetion.MyException;
 import com.hhj.seckill.config.RabbitMqConfig;
 import com.hhj.seckill.service.SecKillService;
@@ -15,7 +16,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;;import java.io.IOException;
+import org.springframework.transaction.annotation.Transactional;;import java.io.File;
+import java.io.IOException;
 
 
 /**

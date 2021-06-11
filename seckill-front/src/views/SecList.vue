@@ -46,12 +46,12 @@
             @click="handletoDetail(scope.$index, scope.row)"
             >进去秒杀</el-button
           >
-          <!-- <el-button
+          <el-button
             size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-            >编辑</el-button
-          > -->
+            type="success"
+            @click="handlePrepare(scope.$index, scope.row)"
+            >库存预热</el-button
+          >
           <!-- <el-button
             size="mini"
             type="danger"
@@ -138,8 +138,15 @@ export default {
       });
     },
 
-    handleEdit(index, row) {
-      console.log(index, row);
+    handlePrepare(index, row) {
+      this.$axios.get("/secgood/prepare?id="+row.id).then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success(res.data.msg);
+          // this.reload();
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      });
     },
     handletoDetail(index, row) {
       this.$router.push({

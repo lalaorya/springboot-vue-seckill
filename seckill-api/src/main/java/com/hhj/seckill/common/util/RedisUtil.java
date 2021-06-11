@@ -68,9 +68,19 @@ public class RedisUtil {
         // 若是字符串则直接存储；若是对象先转化为json字符串再存储
         valueOperations.set(key,value);
 
+
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
+    }
+
+    /**
+     * 获取键的过期时间
+     * @param key
+     * @return
+     */
+    public Long getExire(String key){
+        return redisTemplate.getExpire(key,TimeUnit.SECONDS);
     }
 
     /**

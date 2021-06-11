@@ -38,9 +38,9 @@ spring:
         url-pattern: /*
         exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
 #      最大连接数
-      max-active: 20
+      max-active: 100
 #      初始化连接池大小
-      initial-size: 5
+      initial-size: 10
       max-wait: 60000
 #      最小连接数
       min-idle: 10
@@ -60,7 +60,7 @@ spring:
     host: 47.106.104.139
     port: 6379
     password: 123abc
-    lettuce:
+    jedis:
       pool:
         max-active: 200
         max-idle: 50
@@ -81,17 +81,17 @@ spring:
     listener:
       simple:
         concurrency: 10
-        prefetch: 10
+        prefetch: 100
         auto-startup: true
         default-requeue-rejected: true
         acknowledge-mode: manual
     template:
-      retry:
-        enabled: true
-        initial-interval: 1s
-        max-attempts: 3
-        max-interval: 10s
-        multiplier: 1.0
+#      retry:
+#        enabled: true
+#        initial-interval: 1s
+#        max-attempts: 3
+#        max-interval: 10s
+#        multiplier: 1.0
       mandatory: true
 
 
@@ -119,8 +119,8 @@ mybatis:
 # 日志配置
 logging:
   level:
-    com.hhj.seckill.mapper: debug # 设置指定包的日志级别（未指定的包按照root的日志级别执行）
-    root: info  # 定义项目日志级别（默认是info）
+    com.hhj.seckill.mapper: error # 设置指定包的日志级别（未指定的包按照root的日志级别执行）
+    root: error  # 定义项目日志级别（默认是info）
 
 
 

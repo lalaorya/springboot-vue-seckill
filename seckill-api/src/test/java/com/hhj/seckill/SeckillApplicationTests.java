@@ -37,18 +37,18 @@ class SeckillApplicationTests {
 
     @Test
     void contextLoads() {
-        String lua="if redis.cal(\"get\",KEYS[1] )> 0 then\n" +
-                "\treturn redis.call(\"decr\",KEYS[1])\n" +
-                "else\n" +
-                "\treturn 0\n" +
-                "end";
-        DefaultRedisScript<Long> longDefaultRedisScript = new DefaultRedisScript<>(lua,Long.class);
-//        longDefaultRedisScript.setScriptSource(new ResourceScriptSource(
-//                new ClassPathResource("/delstock.lua")
-//        ));
-//        longDefaultRedisScript.setResultType(Long.class);
-        Object execute = redisTemplate.execute(longDefaultRedisScript, Collections.singletonList("seckill:stock:23"));
-        System.out.println(execute);
+//        String lua="if redis.cal(\"get\",KEYS[1] )> 0 then\n" +
+//                "\treturn redis.call(\"decr\",KEYS[1])\n" +
+//                "else\n" +
+//                "\treturn 0\n" +
+//                "end";
+//        DefaultRedisScript<Long> longDefaultRedisScript = new DefaultRedisScript<>(lua,Long.class);
+////        longDefaultRedisScript.setScriptSource(new ResourceScriptSource(
+////                new ClassPathResource("/delstock.lua")
+////        ));
+////        longDefaultRedisScript.setResultType(Long.class);
+//        Object execute = redisTemplate.execute(longDefaultRedisScript, Collections.singletonList("seckill:stock:23"));
+//        System.out.println(execute);
 
     }
 

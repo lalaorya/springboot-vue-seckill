@@ -30,9 +30,9 @@ import java.util.List;
 @RestController
 @Slf4j
 @Api("秒杀操作")
-public class SeckillController implements InitializingBean {
+public class SeckillController{
 
-    private final String SEC_KILL_STOCK="seckill:stock:";
+//    private final String SEC_KILL_STOCK="seckill:stock:";
 
     @Autowired
     SecGoodService secGoodService;
@@ -79,15 +79,15 @@ public class SeckillController implements InitializingBean {
     }
 
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // 库存预热
-        // 读取所有秒杀商品及其库存 进行redis缓存
-        List<SecGood> secGoods = secGoodService.selectList();
-        for(SecGood secGood:secGoods){
-            util.set(SEC_KILL_STOCK+secGood.getId(),
-                            secGood.getStock(),
-                    secGood.getEndTime().getTime()-System.currentTimeMillis());
-        }
-    }
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        // 库存预热
+//        // 读取所有秒杀商品及其库存 进行redis缓存
+//        List<SecGood> secGoods = secGoodService.selectList();
+//        for(SecGood secGood:secGoods){
+//            util.set(SEC_KILL_STOCK+secGood.getId(),
+//                            secGood.getStock(),
+//                    secGood.getEndTime().getTime()-System.currentTimeMillis());
+//        }
+//    }
 }
