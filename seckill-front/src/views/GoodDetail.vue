@@ -163,24 +163,36 @@ export default {
                 spinner: "el-icon-loading",
                 background: "rgba(0, 0, 0, 0.6)",
               });
-              setTimeout(() => {
-                loading.close();
-                this.$confirm("秒杀成功", "提示", {
-                  confirmButtonText: "查看订单",
-                  cancelButtonText: "取消",
-                  type: "success",
-                })
-                  .then(() => {
-                    this.$router.push({
-                      path: "/secorder/",
-                    });
-                  })
-                  .catch(() => {
-                    this.$message({
-                      type: "info",
-                      message: "已取消",
-                    });
+              const interval1 =setInterval(() => {
+                // 轮询查看订单是否完成
+                setTimeout(() => {
+                  clearInterval(interval1)
+                }, 10000);
+                _this.$axios
+                  .post("/secorder/selectEntry", _this.seckillForm)
+                  .then((res) => {
+                    if (res.data.code == 200) {
+                      clearInterval(interval1)
+                      loading.close();
+                      this.$confirm("秒杀成功", "提示", {
+                        confirmButtonText: "查看订单",
+                        cancelButtonText: "取消",
+                        type: "success",
+                      })
+                        .then(() => {
+                          this.$router.push({
+                            path: "/secorder/",
+                          });
+                        })
+                        .catch(() => {
+                          this.$message({
+                            type: "info",
+                            message: "已取消",
+                          });
+                        });
+                    }
                   });
+                
               }, 2000);
             } else {
               this.$message.error(res.data.msg);

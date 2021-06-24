@@ -23,4 +23,6 @@ public interface SecOrderMapper {
 
     public boolean payById(@Param("id") int id,@Param("payTime") Date payTime);
 
+    public Long selectBySecIdAndUserId(@Param("secId") int secId, @Param("userId") int userId);
+
 }

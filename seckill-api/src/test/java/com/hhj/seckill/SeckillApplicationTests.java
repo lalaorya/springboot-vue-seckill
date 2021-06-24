@@ -1,5 +1,6 @@
 package com.hhj.seckill;
 
+import com.hhj.seckill.common.util.CaptchaUtils;
 import com.hhj.seckill.common.util.RegisterUtil;
 import com.hhj.seckill.mq.MqConsumer;
 import com.hhj.seckill.mq.MqSender;
@@ -49,6 +50,8 @@ class SeckillApplicationTests {
 ////        longDefaultRedisScript.setResultType(Long.class);
 //        Object execute = redisTemplate.execute(longDefaultRedisScript, Collections.singletonList("seckill:stock:23"));
 //        System.out.println(execute);
+//        util.doRegister();
+        CaptchaUtils.generateCode();
 
     }
 

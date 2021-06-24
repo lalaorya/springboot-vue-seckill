@@ -56,14 +56,6 @@ public class SecKillServiceImpl implements SecKillService {
     @Override
     public SeckillEnum doSecKill (SecKillOrder secKillOrder) throws  RuntimeException{
 
-        // 查看redis中库存是否大于0
-        // 库存预热 这里一定有
-//        long stock = redisUtil.decr(SEC_KILL_STOCK+secKillOrder.getSecId());
-        long stock = redisUtil.luaStock(SEC_KILL_STOCK + secKillOrder.getSecId());
-        log.info("当前库存为{}",stock);
-
-        if(stock < 0)    throw new MyException(ErrorEnum.STOCK_ZERT);
-
         // 重复消费判断
         // 默认过期时间为两天
         // 这里过期时间应该要修改 但是又怕会影响性能 TODO
@@ -74,6 +66,13 @@ public class SecKillServiceImpl implements SecKillService {
             // 重复购买了
             throw new MyException(ErrorEnum.REPEAT);
         };
+
+        // 查看redis中库存是否大于0
+        // 库存预热 这里一定有
+        long stock = redisUtil.luaStock(SEC_KILL_STOCK + secKillOrder.getSecId());
+        log.info("当前库存为{}",stock);
+
+        if(stock < 0)    throw new MyException(ErrorEnum.STOCK_ZERT);
 
         // v2.0 订单放入消息队列
         sender.sendOrder(secKillOrder);
@@ -90,7 +89,7 @@ public class SecKillServiceImpl implements SecKillService {
         boolean res2 = secOrderService.generateOrder(secKillOrder);
         if(res2 == false){
             // 生成订单失败
-            throw new MyException(ErrorEnum.INNER_ERROR);
+            throw new MyException(ErrorEnum.REPEAT);
         }
 
         // 减库存

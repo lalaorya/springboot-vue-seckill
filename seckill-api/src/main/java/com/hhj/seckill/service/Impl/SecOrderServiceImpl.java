@@ -47,4 +47,10 @@ public class SecOrderServiceImpl implements SecOrderService {
         boolean b = secOrderMapper.payById(id, payTime);
         return b;
     }
+
+    @Override
+    public Long selectBySecIdAndUserId(int secId, int userId) {
+        Long l = secOrderMapper.selectBySecIdAndUserId(secId, userId);
+        return l;
+    }
 }

@@ -24,6 +24,27 @@
             <!-- <el-button slot="prepend" icon="el-icon-lx-lock">密码</el-button>、 -->
           </el-input>
         </el-form-item>
+
+        <el-form-item prop="code">
+          <div
+            style="
+              display: flex;
+              flex-wrap: nowrap;
+              flex-direction: row;
+            "
+          >
+            <el-input
+              width="80%"
+              placeholder="验证码"
+              v-model="loginForm.code"
+              @keyup.enter.native="login"
+            >
+            </el-input>
+            <img :src="captchaImg" alt="" width="100px" height="30px" @click="getCaptchaImg">
+          </div>
+
+          <!-- <el-button slot="prepend" icon="el-icon-lx-lock">密码</el-button>、 -->
+        </el-form-item>
         <div class="login-btn">
           <el-button type="primary" @click="login">登录</el-button>
         </div>
@@ -37,9 +58,12 @@
 export default {
   data: function () {
     return {
+      captchaImg:"",
+
       loginForm: {
         nick: "admin",
         password: "admin",
+        code:""
       },
       rules: {
         nick: [{ required: true, message: "请输入用户名", trigger: "blur" }],
@@ -47,7 +71,24 @@ export default {
       },
     };
   },
+  created(){
+    this.getCaptchaImg();
+  },
   methods: {
+
+    getCaptchaImg(){
+      const _this=this;
+      _this.$axios.get("/getCaptcha",{
+        // responseType: 'blob'
+      }).then((res) => {
+        if(res.data.code===200){
+          console.log(res.data.dta);
+          _this.captchaImg=res.data.data;
+        }
+        console.log(res);
+      });
+    },
+
     login() {
       const _this = this;
       // _this.
@@ -69,7 +110,7 @@ export default {
             _this.$store.commit("SET_TOKEN", token);
             _this.$store.commit("SET_USERINFO", res.data.data);
             // _this.$store.commit("SET_USERINFO", res.data.data);
-             _this.$router.push('/goodlist');
+            _this.$router.push("/goodlist");
           });
         } else {
           this.$message({

@@ -18,6 +18,7 @@ public enum ErrorEnum {
     // 登录模块
     LOGIN_FAIT(10001,"登录失败"),
     CAPTCHA_WRONG(10002,"验证码错误"),
+    CAPTCHA_EXPIRE(10005,"验证码已失效"),
     USERNAME_OR_PASSWORD_WRONG(10003,"用户名或密码错误"),
     TOKEN_EXPIRED(10004,"token已过期，请重新登录"),
 
@@ -28,7 +29,9 @@ public enum ErrorEnum {
     REPEAT(20003,"禁止重复秒杀"),
     INNER_ERROR(20004,"系统异常,请联系管理员"),
     DATE_REWRITE(20005,"数据被篡改"),
-    STOCK_ZERT(20006,"已被抢光");
+    STOCK_ZERT(20006,"已被抢光"),
+    QUEUE_NOW(20007,"正在排对"),
+    NOWORK_REQUEST(20008,"前端限流无效请求");
 
     private int code;
     private String msg;

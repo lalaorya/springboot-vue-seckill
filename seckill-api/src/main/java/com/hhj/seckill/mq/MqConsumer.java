@@ -43,7 +43,6 @@ public class MqConsumer {
      */
     @RabbitListener(queues = RabbitMqConfig.SEC_QUEUE_ORDER)
     public void receiveOrder(@Payload SecKillOrder secKillOrder, Message message, Channel channel) throws IOException {
-        System.out.println(message);
         try {
             secKillService.seckill(secKillOrder);
 //            message.getMessageProperties().getPublishSequenceNumber();

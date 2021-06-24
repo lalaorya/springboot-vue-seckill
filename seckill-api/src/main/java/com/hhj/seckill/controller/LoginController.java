@@ -1,22 +1,30 @@
 package com.hhj.seckill.controller;
 
+import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.bean.BeanUtil;
 import com.hhj.seckill.common.Result;
 import com.hhj.seckill.common.enums.ErrorEnum;
 import com.hhj.seckill.common.excetion.MyException;
+import com.hhj.seckill.common.util.CaptchaUtils;
 import com.hhj.seckill.common.util.JwtUtil;
+import com.hhj.seckill.common.util.RedisUtil;
 import com.hhj.seckill.entry.User;
 import com.hhj.seckill.service.UserService;
 import com.hhj.seckill.vo.LoginVo;
+import com.mysql.cj.util.StringUtils;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import com.hhj.seckill.common.util.MdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -29,6 +37,8 @@ import javax.servlet.http.HttpServletResponse;
 @Api("登录控制")
 public class LoginController {
 
+    private final String CODE="seckill:userId:code:";
+
     @Autowired
     UserService service;
 
@@ -38,9 +48,22 @@ public class LoginController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Autowired
+    RedisUtil redisUtil;
+
 
     @PostMapping(path = {"login"})
-    public Result doLogin(@RequestBody @Validated LoginVo vo, HttpServletResponse response){
+    public Result doLogin(@RequestBody @Validated LoginVo vo, HttpServletResponse response, HttpServletRequest request){
+        // 判断验证码
+        String authorization = request.getHeader("authorization");
+        String userId = jwtUtil.getClaimByToken(authorization).getSubject();
+        Object code = redisUtil.getObj(CODE + userId,Object.class);
+        if(code==null){
+            throw new MyException(ErrorEnum.CAPTCHA_EXPIRE);
+        }else if (!(code.equals(vo.getCode()))){
+            throw new MyException(ErrorEnum.CAPTCHA_WRONG);
+        }
+
         // 通过昵称查找用户
         User user = service.selectByNick(vo.getNick());
         if(user==null){
@@ -68,5 +91,17 @@ public class LoginController {
 
 //    @PostMapping("/register")
 //    public Result doRegister(@RequestBody )
+
+    @GetMapping("getCaptcha")
+    @ApiOperation("获取验证码")
+    public Result getCaptcha(HttpServletRequest request){
+        String authorization = request.getHeader("authorization");
+        String userId = jwtUtil.getClaimByToken(authorization).getSubject();
+        LineCaptcha lineCaptcha = CaptchaUtils.generateCode();
+        String code = lineCaptcha.getCode();
+        redisUtil.set(CODE+userId,code,60);
+//        lineCaptcha.getImageBase64Data()
+        return Result.success(lineCaptcha.getImageBase64Data());
+    }
 
 }

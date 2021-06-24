@@ -16,7 +16,7 @@ import java.util.Date;
  * @Version 1.0
  */
 
-//@Component
+@Component
 public class RegisterUtil {
 
     @Autowired
@@ -28,7 +28,7 @@ public class RegisterUtil {
     public void doRegister(){
 //        new User(null,null,"admin1",);
 
-        for (int i = 1; i <= 1000; i++) {
+        for (int i = 1001; i <= 5000; i++) {
             String salt= RandomUtil.randomString(10);
             // 前端一次加密
             String md5 = SecureUtil.md5("admin"+i);

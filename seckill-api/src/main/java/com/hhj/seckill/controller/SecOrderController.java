@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageInfo;
 import com.hhj.seckill.common.Result;
+import com.hhj.seckill.common.enums.ErrorEnum;
 import com.hhj.seckill.entry.Good;
 import com.hhj.seckill.entry.SecOrder;
 import com.hhj.seckill.service.SecOrderService;
@@ -44,6 +45,16 @@ public class SecOrderController {
             return Result.success(DateUtil.format(date,"yyyy-MM-dd HH:mm:ss"),"付款成功");
         }
         return Result.error("付款失败");
+    }
+
+    @PostMapping("selectEntry")
+    public Result selectByForm(@RequestBody SecKillVo vo){
+        Long l = service.selectBySecIdAndUserId(vo.getSecId(), vo.getUserId());
+        if(l != null){
+            return Result.success(null,"秒杀成功");
+        }
+
+        return Result.error(ErrorEnum.QUEUE_NOW.getMsg());
     }
 
 

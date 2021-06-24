@@ -11,4 +11,7 @@
     <select id="selectList" resultType="com.hhj.seckill.entry.SecOrder">
         select id,sec_id,user_id,status,create_time,pay_time from secorder
     </select>
+    <select id="selectBySecIdAndUserId" resultType="java.lang.Long">
+        select id from secorder where sec_id=#{secId} and user_id=#{userId}
+    </select>
 </mapper>

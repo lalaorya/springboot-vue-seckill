@@ -21,4 +21,6 @@ public interface SecOrderService {
     public boolean generateOrder(SecKillOrder secKillOrder);
 
     public boolean payById(@Param("id") int id, @Param("payTime") Date payTime);
+
+    Long selectBySecIdAndUserId(@Param("secId") int secId, @Param("userId") int userId);
 }
