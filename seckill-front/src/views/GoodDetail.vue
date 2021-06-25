@@ -163,6 +163,7 @@ export default {
                 spinner: "el-icon-loading",
                 background: "rgba(0, 0, 0, 0.6)",
               });
+<<<<<<< HEAD
               const interval1 =setInterval(() => {
                 // 轮询查看订单是否完成
                 setTimeout(() => {
@@ -193,6 +194,26 @@ export default {
                     }
                   });
                 
+=======
+              setTimeout(() => {
+                loading.close();
+                this.$confirm("秒杀成功", "提示", {
+                  confirmButtonText: "查看订单",
+                  cancelButtonText: "取消",
+                  type: "success",
+                })
+                  .then(() => {
+                    this.$router.push({
+                      path: "/secorder/",
+                    });
+                  })
+                  .catch(() => {
+                    this.$message({
+                      type: "info",
+                      message: "已取消",
+                    });
+                  });
+>>>>>>> 48dce43b932f0e08bb5254a07700159f3fbae7e0
               }, 2000);
             } else {
               this.$message.error(res.data.msg);
