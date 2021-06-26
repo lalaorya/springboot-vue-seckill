@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: '',
-    userInfo: JSON.parse(localStorage.getItem("sec_userInfo")) || {}
+    userInfo: JSON.parse(localStorage.getItem("sec_userInfo")) || {},
+    captId: JSON.parse(localStorage.getItem("capity_uuid")) || {},
   },
   // 相当于set
   mutations: {
@@ -19,6 +20,10 @@ export default new Vuex.Store({
       state.userInfo = userInfo
       localStorage.setItem("sec_userInfo", JSON.stringify(userInfo))
     },
+    SET_CAPTID: (state, captId) => {
+      state.captId = captId
+      localStorage.setItem("capity_uuid", JSON.stringify(captId))
+    },
     // 清空本地和localstarage的信息
     REMOVE_INFO: (state) => {
       state.token = {}
@@ -30,7 +35,8 @@ export default new Vuex.Store({
   },
   getters: {
     getUser: state => {
-      return state.userInfo
+      console.log(state);
+      return JSON.parse(localStorage.getItem("sec_userInfo"))
     }
   },
 })
