@@ -26,13 +26,7 @@
         </el-form-item>
 
         <el-form-item prop="code">
-          <div
-            style="
-              display: flex;
-              flex-wrap: nowrap;
-              flex-direction: row;
-            "
-          >
+          <div style="display: flex; flex-wrap: nowrap; flex-direction: row">
             <el-input
               width="80%"
               placeholder="验证码"
@@ -40,7 +34,13 @@
               @keyup.enter.native="login"
             >
             </el-input>
-            <img :src="captchaImg" alt="" width="100px" height="30px" @click="getCaptchaImg">
+            <img
+              :src="captchaImg"
+              alt=""
+              width="100px"
+              height="30px"
+              @click="getCaptchaImg"
+            />
           </div>
 
           <!-- <el-button slot="prepend" icon="el-icon-lx-lock">密码</el-button>、 -->
@@ -58,12 +58,12 @@
 export default {
   data: function () {
     return {
-      captchaImg:"",
+      captchaImg: "",
 
       loginForm: {
         nick: "admin",
         password: "admin",
-        code:""
+        code: "",
       },
       rules: {
         nick: [{ required: true, message: "请输入用户名", trigger: "blur" }],
@@ -71,22 +71,27 @@ export default {
       },
     };
   },
-  created(){
+  created() {
     this.getCaptchaImg();
   },
   methods: {
+    getCaptchaImg() {
+      const _this = this;
 
-    getCaptchaImg(){
-      const _this=this;
-      _this.$axios.get("/getCaptcha",{
-        // responseType: 'blob'
-      }).then((res) => {
-        if(res.data.code===200){
-          console.log(res.data.dta);
-          _this.captchaImg=res.data.data;
-        }
-        console.log(res);
-      });
+      _this.$axios
+        .get("/getCaptcha", {
+          // responseType: 'blob'
+        })
+        .then((res) => {
+          
+           _this.$store.commit("SET_CAPTID", res.headers["uuid"]);
+      
+          if (res.data.code === 200) {
+            console.log(res.data.dta);
+            _this.captchaImg = res.data.data;
+          }
+          console.log(res);
+        });
     },
 
     login() {
