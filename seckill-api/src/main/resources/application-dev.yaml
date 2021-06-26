@@ -119,8 +119,8 @@ mybatis:
 # 日志配置
 logging:
   level:
-    com.hhj.seckill.mapper: debug # 设置指定包的日志级别（未指定的包按照root的日志级别执行）
-    root: info  # 定义项目日志级别（默认是info）
+    com.hhj.seckill.mapper: error # 设置指定包的日志级别（未指定的包按照root的日志级别执行）
+    root: error  # 定义项目日志级别（默认是info）
 
 
 

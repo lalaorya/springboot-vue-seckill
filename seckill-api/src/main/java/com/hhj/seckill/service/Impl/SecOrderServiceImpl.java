@@ -28,10 +28,8 @@ public class SecOrderServiceImpl implements SecOrderService {
     public PageInfo<SecOrder> selectPage(int curPage, int size) {
         PageHelper.startPage(curPage,size);
         List<SecOrder> goods = secOrderMapper.selectList();
-        System.out.println(goods.toString());
         Page page = PageHelper.startPage(curPage, size);
         PageInfo<SecOrder> info = new PageInfo<>(goods);
-        System.out.println(info.toString());
 
         return info;
     }

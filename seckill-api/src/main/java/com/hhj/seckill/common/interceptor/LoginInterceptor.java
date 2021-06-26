@@ -48,11 +48,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (!StringUtils.isNullOrEmpty(authorization)){
             log.info(authorization);
             // 查看缓存是否有
-            System.out.println(redisUtil);
             String obj = redisUtil.getObj(authorization, String.class);
             if(!StringUtils.isNullOrEmpty(obj)){
-                System.out.println(11);
-                log.info(obj);
                 return true;
             }
         }

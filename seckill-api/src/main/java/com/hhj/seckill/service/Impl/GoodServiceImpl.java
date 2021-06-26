@@ -31,10 +31,8 @@ public class GoodServiceImpl implements GoodService {
     public PageInfo<Good> selectPage(int curPage, int size) {
         PageHelper.startPage(curPage,size);
         List<Good> goods = selectList();
-        System.out.println(goods.toString());
         Page page = PageHelper.startPage(curPage, size);
         PageInfo<Good> info = new PageInfo<>(goods);
-        System.out.println(info.toString());
 
         return info;
     }

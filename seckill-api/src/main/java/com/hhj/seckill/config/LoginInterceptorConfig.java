@@ -20,7 +20,7 @@ public class LoginInterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("/login","/getCaptcha");
+        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("/login","/getCaptcha","/seckill");
 
     }
 }

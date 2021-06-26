@@ -64,7 +64,7 @@ public class RedisUtil {
      * @param value
      * @param expire -1为永不过期，单位为秒s
      */
-    public void set(String key, Object value, long expire) {
+    public void  set(String key, Object value, long expire) {
         // 若是字符串则直接存储；若是对象先转化为json字符串再存储
         valueOperations.set(key,value);
 
