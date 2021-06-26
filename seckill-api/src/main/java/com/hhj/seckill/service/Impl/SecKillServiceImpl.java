@@ -67,7 +67,7 @@ public class SecKillServiceImpl implements SecKillService {
             throw new MyException(ErrorEnum.REPEAT);
         };
 
-        // 查看redis中库存是否大于0
+        // 查看redis中库存是否大于0 lua脚本保证原子性
         // 库存预热 这里一定有
         long stock = redisUtil.luaStock(SEC_KILL_STOCK + secKillOrder.getSecId());
         log.info("当前库存为{}",stock);
