@@ -8,15 +8,26 @@ axios.defaults.baseURL = 'http://localhost:9090'
 // let CancelToken = axios.CancelToken
 // 请求拦截器
 axios.interceptors.request.use(config => {
+    
     console.log("前置拦截")
     // // 可以统一设置请求头
     const token=window.localStorage.getItem('sec_token')||'{}'
-    if(token !== '{}'){
+    const uuid=window.localStorage.getItem('capity_uuid')||'{}'
+    if(token !== '{}' || uuid !== '{}' ){
         config.headers.authorization = token
+        config.headers.capityUUID = uuid
+        console.log(uuid);
     }
     return config
 })
 axios.interceptors.response.use(response => {
+    // const t=response.headers["uuid"];
+    // if(t!==null){
+    //     window.localStorage.setItem("capity_uuid",t)
+    // }
+    
+    
+   
     const res = response.data;
     console.log("后置拦截")
     console.log(res);
