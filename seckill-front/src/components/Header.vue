@@ -24,8 +24,9 @@ export default {
   },
   methods: {
     toGoodList(tab) {
+      
       this.$router.push({
-        path: tab.name,
+        path: "/"+tab.name,
       });
     },
   },
