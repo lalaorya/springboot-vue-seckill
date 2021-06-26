@@ -2,11 +2,11 @@
 
 基于`springboot+vue`的高并发秒杀项目，实现了登录页面、商品列表页面、商品详情页面、订单页面、计时秒杀操作等，其中秒杀下单请求的单机QPS从300+优化到3000+，提升了十倍
 
-![image-20210626160549384.png](C:%5CDocuments(%E8%B5%84%E6%96%99)%5CLearning%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%B0%8F%E6%B2%88%5Cimg%5CPoWZHcM6KD2FkAd.png)
+![image-20210626160549384.png](https://i.loli.net/2021/06/26/aMurpfkceNZP8Ht.png)
 
 ----
 
-![image-20210611101941858](C:%5CDocuments(%E8%B5%84%E6%96%99)%5CLearning%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%B0%8F%E6%B2%88%5Cimg%5Cimage-20210611101941858.png)
+![image-20210611101941858](https://i.loli.net/2021/06/26/AlaZXF8uHOWg37s.png)
 
 本项目已开源,如果对你有帮助,请留下star⭐支持一下
 
@@ -24,7 +24,7 @@
 
 ### 未优化之前QPS（纯MySQL）：
 
-<img src="C:%5CDocuments(%E8%B5%84%E6%96%99)%5CLearning%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%B0%8F%E6%B2%88%5Cimg%5Cimage-20210603223606621.png" alt="image-20210603223606621" style="zoom:200%;" />
+<img src="https://i.loli.net/2021/06/26/FC1GtVwBfzrZeqX.png" alt="image-20210603223606621" style="zoom:200%;" />
 
 秒杀操作一共要发两个请求，第一个为请求真正秒杀接口，第二个为秒杀
 
@@ -88,7 +88,7 @@
 >
 > `explain update secgood set stock=stock-1 where id=23 and stock>0;`
 >
-> ![image-20210604164815557](C:%5CDocuments(%E8%B5%84%E6%96%99)%5CLearning%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%B0%8F%E6%B2%88%5Cimg%5Cimage-20210604164815557.png)
+> ![image-20210604164815557](https://i.loli.net/2021/06/26/J4HkzrbDaTfPRiM.png)
 >
 > 关键看用了哪些索引和type，走的是全表查询还是索引查询等等
 
@@ -137,7 +137,7 @@
 
 QPS进一步提升
 
-![image-20210605212742273](C:%5CDocuments(%E8%B5%84%E6%96%99)%5CLearning%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%B0%8F%E6%B2%88%5Cimg%5Cimage-20210605212742273.png)
+![image-20210605212742273](https://i.loli.net/2021/06/26/Iap8Bvg2KeF3VoR.png)
 
 ### 优化三：消息队列实现异步、削峰填谷
 
@@ -157,7 +157,7 @@ RabbitMQ保证消息可靠性的机制有：生产者confirm | 生产者return |
 
 优化完QPS明显提升，达到3000+，无超卖少卖现象：
 
-![image-20210611101941858](C:%5CDocuments(%E8%B5%84%E6%96%99)%5CLearning%5C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%B0%8F%E6%B2%88%5Cimg%5Cimage-20210611101941858.png)
+<img src="https://i.loli.net/2021/06/26/RBQ3fxTrPWYos2c.png" alt="image-20210611101941858" style="zoom:200%;" />
 
 ### 优化四：前端接口限流//TODO
 
