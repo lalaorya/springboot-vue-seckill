@@ -17,8 +17,8 @@
 
 ## 相关数据文档：
 
-- 数据库SQL文件：
-- jmeter压测文件：
+- [数据库SQL文件](https://github.com/sang-Mu/springboot-vue-seckill/tree/v2.0/resource/db)
+- [jmeter压测文件](https://github.com/sang-Mu/springboot-vue-seckill/tree/v2.0/resource/jmeter)
 
 ## 高并发优化思路
 
